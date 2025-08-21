@@ -1,9 +1,9 @@
 import Description from "../Description/description";
-import Options from "../Options/options";
+import Options from "./Options/options";
 import "./App.css";
-import Feedback from "../FeedBack/feedback";
+import Feedback from "./FeedBack/feedback";
 import { useState, useEffect } from "react";
-import Notification from "../Notification/notification";
+import Notification from "./Notification/notification";
 
 function App() {
   const [totals, setTotals] = useState(() => {
