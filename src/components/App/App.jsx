@@ -1,61 +1,58 @@
-import Description from "../Description/description";
-import Options from "./Options/options";
-import "./App.css";
-import Feedback from "./FeedBack/feedback";
-import { useState, useEffect } from "react";
-import Notification from "./Notification/notification";
+import { useState } from "react";
+import css from "./App.module.css";
+
+import CafeInfo from "../CafeInfo/CafeInfo";
+import VoteOptions from "../VoteOptions/VoteOptions";
+import Notification from "../Notification/Notification";
+import VoteStats from "../VoteStats/VoteStats";
+
+import type { VoteType, Votes } from "../../types/votes";
 
 function App() {
-  const [totals, setTotals] = useState(() => {
-    const savedScore = localStorage.getItem("savedScoreKey");
-    if (savedScore !== null) {
-      return JSON.parse(savedScore);
-    }
-    return {
+  const [votes, setVotes] =
+    useState <
+    Votes >
+    {
       good: 0,
       neutral: 0,
       bad: 0,
     };
-  });
 
-  useEffect(
-    () => localStorage.setItem("savedScoreKey", JSON.stringify(totals)),
-    [totals]
-  );
-
-  const totalFeedback = totals.good + totals.neutral + totals.bad;
-
-  const updateFeedback = (feedbackType) => {
-    if (feedbackType === "reset") {
-      setTotals({
-        good: 0,
-        neutral: 0,
-        bad: 0,
-      });
-    } else {
-      setTotals({
-        ...totals,
-        [feedbackType]: totals[feedbackType] + 1,
-      });
-    }
+  const handleVote = (type: VoteType) => {
+    setVotes((prev) => ({
+      ...prev,
+      [type]: prev[type] + 1,
+    }));
   };
 
-  const positiveFeedback = Math.round((totals.good / totalFeedback) * 100);
+  const resetVotes = () => {
+    setVotes({ good: 0, neutral: 0, bad: 0 });
+  };
+
+  const totalVotes = votes.good + votes.neutral + votes.bad;
+  const positiveRate = totalVotes
+    ? Math.round((votes.good / totalVotes) * 100)
+    : 0;
 
   return (
-    <>
-      <Description />
-      <Options updateFeedback={updateFeedback} totalFeedback={totalFeedback} />
-      {totalFeedback > 0 ? (
-        <Feedback
-          totals={totals}
-          totalFeedback={totalFeedback}
-          positiveFeedback={positiveFeedback}
-        />
-      ) : (
+    <div className={css.app}>
+      <CafeInfo />
+      <VoteOptions
+        onVote={handleVote}
+        onReset={resetVotes}
+        canReset={totalVotes > 0}
+      />
+
+      {totalVotes === 0 ? (
         <Notification />
+      ) : (
+        <VoteStats
+          votes={votes}
+          totalVotes={totalVotes}
+          positiveRate={positiveRate}
+        />
       )}
-    </>
+    </div>
   );
 }
 
