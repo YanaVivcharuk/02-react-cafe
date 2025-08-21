@@ -1,13 +1,17 @@
-function Feedback({ good, neutral, bad, total, positive }) {
+import css from "./Feedback.module.css";
+
+export default function Feedback({
+  totals: { good, neutral, bad },
+  totalFeedback,
+  positiveFeedback,
+}) {
   return (
     <div>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>Total: {total}</p>
-      <p>Positive: {positive}</p>
+      <p>Good:{good}</p>
+      <p>Neutral:{neutral}</p>
+      <p>Bad:{bad}</p>
+      <p>Total:{totalFeedback}</p>
+      <p>Positive:{positiveFeedback}%</p>
     </div>
   );
 }
-
-export default Feedback;

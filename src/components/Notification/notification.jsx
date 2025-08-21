@@ -1,5 +1,9 @@
-function Notification() {
-  return <p>No feedback yet</p>;
-}
+import css from "./Notification.module.css";
 
-export default Notification;
+export default function Notification() {
+  return (
+    <div>
+      <p>No feedback yet</p>
+    </div>
+  );
+}

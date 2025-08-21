@@ -1,11 +1,14 @@
-const Options = ({ onLeaveFeedback, onReset, hasFeedBack }) => {
+import css from "./Options.module.css";
+
+export default function Options({ updateFeedback, totalFeedback }) {
   return (
     <div>
-      <button onClick={() => onLeaveFeedback("good")}>Good</button>
-      <button onClick={() => onLeaveFeedback("neutral")}>Neutral</button>
-      <button onClick={() => onLeaveFeedback("bad")}>Bad</button>
-      {hasFeedBack && <button onClick={onReset}>Reset</button>}
+      <button onClick={() => updateFeedback("good")}>Good</button>
+      <button onClick={() => updateFeedback("neutral")}>Neutral</button>
+      <button onClick={() => updateFeedback("bad")}>Bad</button>
+      {totalFeedback > 0 && (
+        <button onClick={() => updateFeedback("reset")}>Reset</button>
+      )}
     </div>
   );
-};
-export default Options;
+}
